@@ -8,9 +8,10 @@ package tool;
  *
  * @author ADMIN
  */
-import java.util.UUID;
 import menu.Menu;
 import java.util.Scanner;
+import model.Customer;
+import java.util.ArrayList;
 
 public class Inputter {
 
@@ -20,41 +21,38 @@ public class Inputter {
         return input.matches(pattern);
     }
 
-    public static String getCustomerId() {
-        Menu.chooseEvent();
-        String firstLetter = "";
-        Scanner sc = new Scanner(System.in);
-
-        while (true) {
-            System.out.println("Enter your choice (1-3)");
-            choice = sc.nextInt();
-            switch (choice) {
-                case 1:
-                    firstLetter = "C";
-                    break;
-                case 2:
-                    firstLetter = "G";
-                    break;
-                case 3:
-                    firstLetter = "K";
-                    break;
-                default:
-                    System.out.println("Your choice is invalid, please try again.");
-                    continue;
+    public static boolean isDuplicated(String id, ArrayList<Customer> list) {
+        for (Customer c : list) {
+            if (c.getCode().equalsIgnoreCase(id)) {
+                return true;
             }
-            break;
         }
+        return false;
+    }
 
-        String id = UUID.randomUUID().toString().replaceAll("^[0-9]", "").substring(0, 4);
-        return firstLetter + id;
+    public static String inputCustomerId(ArrayList<Customer> list) {
+        Scanner sc = new Scanner(System.in);
+        String code;
+        while (true) {
+            System.out.print("Enter Customer ID: ");
+            code = sc.nextLine().trim();
+            if (!isValid(code, Acceptable.CUSTOMERID_VALID)) {
+                System.out.println("Invalid ID format. Must start with C/G/K followed by 4 digits.");
+            } else if (isDuplicated(code, list)) {
+                System.out.println("ID is already used. Please enter another one.");
+            } else {
+                break;
+            }
+        }
+        return code;
     }
 
     public static String inputName() {
-        String name = "";
         Scanner sc = new Scanner(System.in);
+        String name;
         while (true) {
-            System.out.println("Enter name: ");
-            name = sc.nextLine();
+            System.out.print("Enter name: ");
+            name = sc.nextLine().trim();
             if (isValid(name, Acceptable.NAME_VALID)) {
                 break;
             } else {
@@ -65,11 +63,11 @@ public class Inputter {
     }
 
     public static String inputPhoneNumber() {
-        String phoneNumber = "";
         Scanner sc = new Scanner(System.in);
+        String phoneNumber;
         while (true) {
-            System.out.println("Enter phone number: ");
-            phoneNumber = sc.nextLine();
+            System.out.print("Enter phone number: ");
+            phoneNumber = sc.nextLine().trim();
             if (isValid(phoneNumber, Acceptable.PHONE_VALID)) {
                 break;
             } else {
@@ -80,11 +78,11 @@ public class Inputter {
     }
 
     public static String inputEmail() {
-        String email = "";
         Scanner sc = new Scanner(System.in);
+        String email;
         while (true) {
-            System.out.println("Enter email: ");
-            email = sc.nextLine();
+            System.out.print("Enter email: ");
+            email = sc.nextLine().trim();
             if (isValid(email, Acceptable.EMAIL_VALID)) {
                 break;
             } else {

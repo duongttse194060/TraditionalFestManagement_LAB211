@@ -8,7 +8,7 @@ package model;
  *
  * @author ADMIN
  */
-public class Customer {
+public class Customer implements Comparable<Customer> {
 
     private String code;
     private String name;
@@ -61,4 +61,10 @@ public class Customer {
     public String toString() {
         return String.format("%s,%s,%s,%s", code, name, phoneNumber, email);
     }
+
+    @Override
+    public int compareTo(Customer other) {
+        return this.name.compareToIgnoreCase(other.name);
+    }
+
 }

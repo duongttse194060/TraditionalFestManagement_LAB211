@@ -10,6 +10,8 @@ package tool;
  */
 public interface Acceptable {
 
+    public final String CUSTOMERID_VALID = "^[CGK][0-9]{4}$";
+
     public final String NAME_VALID = "^.{2,25}$";
 
     public final String PHONE_VALID = "^(03|05|07|08|09)\\d{8}$";

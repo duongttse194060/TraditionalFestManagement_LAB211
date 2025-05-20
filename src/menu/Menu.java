@@ -11,6 +11,7 @@ package menu;
 public class Menu {
 
     public static void function() {
+        
         System.out.println("\n====================== MENU ======================");
         System.out.println("1. Register Customers");
         System.out.println("2. Update Customer Information");
@@ -22,11 +23,5 @@ public class Menu {
         System.out.println("8. Display Customer or Order Lists");
         System.out.println("==================================================");
     }
-
-    public static void chooseEvent() {
-        System.out.println("Choose your type of feast: ");
-        System.out.println("1. Weddings");
-        System.out.println("2. Anniversaries");
-        System.out.println("3. Traditional Ceremonies");
-    }
+    
 }
