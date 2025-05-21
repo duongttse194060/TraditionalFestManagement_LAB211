@@ -6,7 +6,7 @@ package main;
 
 import java.util.Scanner;
 import menu.Menu;
-import Collection.CustomerList;
+import collection.CustomerList;
 
 
 /**
