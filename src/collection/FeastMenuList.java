@@ -90,4 +90,12 @@ public class FeastMenuList {
         return str.replace("#+", "\n+");
     }
 
+    public static FeastMenu findFeastMenuByCode(String str) {
+        for (FeastMenu fm : feastMenus) {
+            if (str.equalsIgnoreCase(fm.getMenuCode())) {
+                return fm;
+            }
+        }
+        return null;
+    }
 }

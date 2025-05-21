@@ -11,7 +11,10 @@ package tool;
 import menu.Menu;
 import java.util.Scanner;
 import model.Customer;
+import model.FeastMenu;
 import java.util.ArrayList;
+import collection.CustomerList;
+import collection.FeastMenuList;
 
 public class Inputter {
 
@@ -90,5 +93,35 @@ public class Inputter {
             }
         }
         return email;
+    }
+
+    public static String findCustomerCode() {
+        Scanner sc = new Scanner(System.in);
+        while (true) {
+            System.out.print("Enter customer code: ");
+            String code = sc.nextLine().trim();
+
+            for (Customer c : CustomerList.customers) {
+                if (code.equalsIgnoreCase(c.getCode())) {
+                    return code.toUpperCase();
+                }
+            }
+
+            System.out.println("Invalid customer code. Please try again.");
+        }
+    }
+
+    public static String findMenuCode() {
+        Scanner sc = new Scanner(System.in);
+        while (true) {
+            System.out.println("Enter set menu code (PW001 - PW006): ");
+            String menuCode = sc.nextLine().trim();
+            for (FeastMenu fm : FeastMenuList.feastMenus) {
+                if (menuCode.equalsIgnoreCase(fm.getMenuCode())) {
+                    return menuCode.toUpperCase();
+                }
+            }
+            System.out.println("Invalid menu code. Please try again");
+        }
     }
 }
