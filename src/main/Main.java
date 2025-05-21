@@ -7,21 +7,20 @@ package main;
 import java.util.Scanner;
 import menu.Menu;
 import Collection.CustomerList;
-import java.util.InputMismatchException;
-import tool.Inputter;
+
 
 /**
  *
  * @author ADMIN
  */
 public class Main {
-
+    
     public static void main(String[] args) {
         int choice = 0;
         Scanner sc = new Scanner(System.in);
-
+        
         do {
-            Menu.function(); 
+            Menu.function();            
             System.out.println("Enter your choice (1-8): ");
             try {
                 choice = Integer.parseInt(sc.nextLine());
@@ -29,18 +28,22 @@ public class Main {
                 System.out.println("Invalid input, please enter a number.");
                 continue;
             }
-
+            
             switch (choice) {
                 case 1:
                     CustomerList.addCustomer();
+                    CustomerList.displayAll();
                     break;
                 case 2:
                     break;
+                case 3:
+                    CustomerList.searchCustomer();
+                    break;
                 default:
                     System.out.println("Invalid choice. Program exited.");
-                    return; 
+                    return;                
             }
-
+            
         } while (true);
     }
 }

@@ -51,7 +51,7 @@ public class Inputter {
         Scanner sc = new Scanner(System.in);
         String name;
         while (true) {
-            System.out.print("Enter name: ");
+            System.out.print("Enter Customer Name: ");
             name = sc.nextLine().trim();
             if (isValid(name, Acceptable.NAME_VALID)) {
                 break;
@@ -66,7 +66,7 @@ public class Inputter {
         Scanner sc = new Scanner(System.in);
         String phoneNumber;
         while (true) {
-            System.out.print("Enter phone number: ");
+            System.out.print("Enter Customer Phone Number: ");
             phoneNumber = sc.nextLine().trim();
             if (isValid(phoneNumber, Acceptable.PHONE_VALID)) {
                 break;
@@ -81,7 +81,7 @@ public class Inputter {
         Scanner sc = new Scanner(System.in);
         String email;
         while (true) {
-            System.out.print("Enter email: ");
+            System.out.print("Enter Customer Email: ");
             email = sc.nextLine().trim();
             if (isValid(email, Acceptable.EMAIL_VALID)) {
                 break;
