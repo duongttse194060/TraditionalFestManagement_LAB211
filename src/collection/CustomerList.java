@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.Scanner;
 import model.Customer;
 import tool.Inputter;
+import tool.Acceptable;
 
 public class CustomerList {
 
@@ -46,7 +47,96 @@ public class CustomerList {
         } while (true);
     }
 
-    public static void searchCustomer() {
+    public static void updateCustomer() {
+        Customer foundCustomer = null;
+        Scanner sc = new Scanner(System.in);
+        while (true) {
+            System.out.println("Enter Customer Id to upgrade: ");
+            String toFind = sc.nextLine();
+            foundCustomer = searchById(toFind);
+            if (foundCustomer == null) {
+                System.out.println("This customer does not exist! Please try again: ");
+            } else {
+                System.out.println("Customer have been found!");
+                displayCustomer(toFind);
+                System.out.println("Enter new information to update or press ENTER to skip: ");
+                break;
+            }
+        }
+
+        // Update Name
+        while (true) {
+            System.out.println("Enter new name to update: ");
+            String newName = sc.nextLine();
+            if (newName.isEmpty()) {
+                System.out.println("Keeping old name. ");
+                break;
+            } else if (Inputter.isValid(newName, Acceptable.NAME_VALID)) {
+                foundCustomer.setName(newName);
+                break;
+            } else {
+                System.out.println("Invalid name, please try again. ");
+            }
+        }
+
+        // Update Phone Number
+        while (true) {
+            System.out.println("Enter new phone number to update: ");
+            String newPhoneNumber = sc.nextLine();
+            if (newPhoneNumber.isEmpty()) {
+                System.out.println("Keeping old phone number. ");
+                break;
+            } else if (Inputter.isValid(newPhoneNumber, Acceptable.PHONE_VALID)) {
+                foundCustomer.setPhoneNumber(newPhoneNumber);
+                break;
+            } else {
+                System.out.println("Invalid phone number, please try again. ");
+            }
+        }
+
+        // Update Email
+        while (true) {
+            System.out.println("Enter new email to upgrade: ");
+            String newEmail = sc.nextLine();
+            if (newEmail.isEmpty()) {
+                System.out.println("Keeping old email. ");
+                break;
+            } else if (Inputter.isValid(newEmail, Acceptable.EMAIL_VALID)) {
+                foundCustomer.setEmail(newEmail);
+                break;
+            } else {
+                System.out.println("Invalid email, please try again. ");
+            }
+        }
+        System.out.println("This customer has been upgraded sucessfully !!! ");
+
+        // Back to Menu
+        while (true) {
+            System.out.println("Do you wish to continue upgrade customer ? (Y/N)");
+            String answer = sc.nextLine();
+            if (answer.equalsIgnoreCase("n")) {
+                System.out.println("Back to the main menu... ");
+                break;
+            } else if (answer.equalsIgnoreCase("y")) {
+                System.out.println("Continue upgrading... ");
+                updateCustomer();
+                break;
+            } else {
+                System.out.println("Invalid input, please try again. ");
+            }
+        }
+    }
+
+    public static Customer searchById(String id) {
+        for (Customer c : customers) {
+            if (c.getCode().equalsIgnoreCase(id)) {
+                return c;
+            }
+        }
+        return null;
+    }
+
+    public static void searchByName() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter name or partial name to search: ");
         String name = sc.nextLine();
@@ -63,6 +153,15 @@ public class CustomerList {
             System.out.println("Matching Customers: " + name);
             showCustomerList(matchedList);
         }
+    }
+
+    public static void displayCustomer(String id) {
+        Customer c = searchById(id);
+        System.out.println("Customer Information: ");
+        System.out.println("Customer ID: " + c.getCode());
+        System.out.println("Customer Name: " + c.getName());
+        System.out.println("Customer Phone Number: " + c.getPhoneNumber());
+        System.out.println("Customer Email: " + c.getEmail());
     }
 
     public static void displayAll() {
