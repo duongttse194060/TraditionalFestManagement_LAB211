@@ -55,18 +55,7 @@ public class FeastMenuList {
         return feastMenus;
     }
 
-    public static void displayMenu() {
-        System.out.println("-------------------------------------------------------------------------------------");
-        System.out.println("List of Set Menus for ordering party:");
-        System.out.println("-------------------------------------------------------------------------------------");
-        for (FeastMenu fm : feastMenus) {
-            System.out.println("Code       : " + fm.getMenuCode());
-            System.out.println("Name       : " + fm.getName());
-            System.out.println("Price      : " + formatPrice(fm.getPrice()));
-            System.out.println("Ingredients: \n" + formatIngredients(fm.getIngredients()));
-            System.out.println("-------------------------------------------------------------------------------------");
-        }
-    }
+    
 
     public static String formatPrice(String str) {
         try {
@@ -75,6 +64,10 @@ public class FeastMenuList {
         } catch (NumberFormatException e) {
             return str;
         }
+    }
+
+    public static String formatPrice(double price) {
+        return String.format("%,.0f", price);
     }
 
     public static String formatIngredients(String str) {

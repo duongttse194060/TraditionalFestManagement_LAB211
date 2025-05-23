@@ -14,6 +14,7 @@ import java.util.Scanner;
 import model.Customer;
 import tool.Inputter;
 import tool.Acceptable;
+import menu.Displayer;
 
 public class CustomerList {
 
@@ -24,9 +25,8 @@ public class CustomerList {
         String input = "";
 
         do {
-            System.out.println("Register a new customer: ");
             String code = Inputter.inputCustomerId(customers);
-            String name = Inputter.inputName();
+            String name = formatName(Inputter.inputName());
             String phoneNumber = Inputter.inputPhoneNumber();
             String email = Inputter.inputEmail();
             customers.add(new Customer(code, name, phoneNumber, email));
@@ -50,6 +50,7 @@ public class CustomerList {
     public static void updateCustomer() {
         Customer foundCustomer = null;
         Scanner sc = new Scanner(System.in);
+
         while (true) {
             System.out.println("Enter Customer Id to upgrade: ");
             String toFind = sc.nextLine();
@@ -58,7 +59,7 @@ public class CustomerList {
                 System.out.println("This customer does not exist! Please try again: ");
             } else {
                 System.out.println("Customer have been found!");
-                displayCustomer(toFind);
+                Displayer.displayCustomerInformation(toFind);
                 System.out.println("Enter new information to update or press ENTER to skip: ");
                 break;
             }
@@ -72,7 +73,7 @@ public class CustomerList {
                 System.out.println("Keeping old name. ");
                 break;
             } else if (Inputter.isValid(newName, Acceptable.NAME_VALID)) {
-                foundCustomer.setName(newName);
+                foundCustomer.setName(formatName(newName));
                 break;
             } else {
                 System.out.println("Invalid name, please try again. ");
@@ -151,38 +152,19 @@ public class CustomerList {
         } else {
             Collections.sort(matchedList);
             System.out.println("Matching Customers: " + name);
-            showCustomerList(matchedList);
+            Displayer.showCustomerList(matchedList);
         }
     }
 
-    public static void displayCustomer(String id) {
-        Customer c = searchById(id);
-        System.out.println("Customer Information: ");
-        System.out.println("Customer ID: " + c.getCode());
-        System.out.println("Customer Name: " + c.getName());
-        System.out.println("Customer Phone Number: " + c.getPhoneNumber());
-        System.out.println("Customer Email: " + c.getEmail());
-    }
-
-    public static void displayAll() {
-        Collections.sort(customers);
-        System.out.println("-----------------------------------------------------------------------");
-        System.out.println("Code        | Customer Name         | Phone          | Email           ");
-        System.out.println("-----------------------------------------------------------------------");
-        for (Customer c : customers) {
-            System.out.println(c);
+    public static String formatName(String name) {
+        String[] parts = name.split("\\s+");
+        if (parts.length > 1) {
+            name = name.trim().replaceAll("\\s+", " ");
+            int lastIndexOfSpace = name.lastIndexOf(" ");
+            String tempName = name.substring(lastIndexOfSpace + 1);
+            String others = name.substring(0, lastIndexOfSpace);
+            return tempName + ", " + others;
         }
-        System.out.println("-----------------------------------------------------------------------");
-    }
-
-    public static void showCustomerList(ArrayList<Customer> list) {
-        Collections.sort(list);
-        System.out.println("-----------------------------------------------------------------------");
-        System.out.println("Code        | Customer Name         | Phone          | Email           ");
-        System.out.println("-----------------------------------------------------------------------");
-        for (Customer c : list) {
-            System.out.println(c);
-        }
-        System.out.println("-----------------------------------------------------------------------");
+        return name;
     }
 }
