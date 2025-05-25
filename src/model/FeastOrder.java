@@ -4,24 +4,26 @@
  */
 package model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author ADMIN
  */
-public class FeastOrder {
+public class FeastOrder implements Serializable, Comparable<FeastOrder> {
 
     private String customerCode;
     private String setMenuCode;
     private String eventDate;
     private int tableNumber;
-    private int orderID;
+    private String orderID;
     private String setPrice;
     private String totalCost;
 
     public FeastOrder() {
     }
 
-    public FeastOrder(String customerCode, String setMenuCode, String eventDate, int tableNumber, int orderID, String setPrice, String totalCost) {
+    public FeastOrder(String customerCode, String setMenuCode, String eventDate, int tableNumber, String orderID, String setPrice, String totalCost) {
         this.customerCode = customerCode;
         this.setMenuCode = setMenuCode;
         this.eventDate = eventDate;
@@ -63,11 +65,11 @@ public class FeastOrder {
         this.tableNumber = tableNumber;
     }
 
-    public int getOrderID() {
+    public String getOrderID() {
         return orderID;
     }
 
-    public void setOrderID(int orderID) {
+    public void setOrderID(String orderID) {
         this.orderID = orderID;
     }
 
@@ -89,8 +91,13 @@ public class FeastOrder {
 
     @Override
     public String toString() {
-        return String.format("| %-5s | %-12s | %-11s | %-8s | %-10s | %-7s | %-10s |",
-                getCustomerCode(), getEventDate(), getOrderID(), getSetMenuCode(), getSetPrice(), getTableNumber(), getTotalCost());
+        return String.format("%-7s| %-12s| %-12s| %-9s| %-10s| %-7s| %-12s", getOrderID(), getEventDate(), getCustomerCode(),
+                getSetMenuCode(), getSetPrice(), getTableNumber(), getTotalCost());
+    }
+
+    @Override
+    public int compareTo(FeastOrder other) {
+        return this.eventDate.compareToIgnoreCase(other.eventDate);
     }
 
 }

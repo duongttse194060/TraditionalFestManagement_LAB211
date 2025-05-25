@@ -10,6 +10,7 @@ import collection.CustomerList;
 import collection.FeastMenuList;
 import collection.FeastOrderList;
 import menu.Displayer;
+import tool.Inputter;
 
 /**
  *
@@ -18,6 +19,8 @@ import menu.Displayer;
 public class Main {
 
     public static void main(String[] args) {
+        CustomerList.readFromFile();
+        FeastOrderList.readFromFile();
         FeastMenuList.readFile();
         int choice = 0;
         Scanner sc = new Scanner(System.in);
@@ -36,12 +39,11 @@ public class Main {
                 case 1:
                     System.out.println("You choose option 1: Register new customer. ");
                     CustomerList.addCustomer();
-                    Displayer.displayAllCustomers();
                     break;
                 case 2:
                     System.out.println("You choose option 2: Update customer information. ");
                     CustomerList.updateCustomer();
-                    Displayer.displayAllCustomers();
+
                     break;
                 case 3:
                     System.out.println("You choose option 3: Search for customer information by name. ");
@@ -54,12 +56,19 @@ public class Main {
                 case 5:
                     System.out.println("You choose option 5: Place a new feast order. ");
                     FeastOrderList.addOrder();
-                    Displayer.showAllOrder();
                     break;
                 case 6:
                     System.out.println("You choose option 6: Update order information by Order ID. ");
                     FeastOrderList.updateOrder();
-                    Displayer.showAllOrder();
+                    break;
+                case 7:
+                    System.out.println("You choose option 7: Save data to file. ");
+                    CustomerList.saveData();
+                    FeastOrderList.saveData();
+                    break;
+                case 8:
+                    System.out.println("You choose option 8: Display customer or order list");
+                    Inputter.displayFile();
                     break;
                 default:
                     System.out.println("Invalid choice. Program exited... ");

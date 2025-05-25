@@ -4,6 +4,12 @@
  */
 package collection;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -12,11 +18,14 @@ import tool.Acceptable;
 import model.FeastOrder;
 import model.FeastMenu;
 import menu.Displayer;
+import java.io.Serializable;
+import java.util.Collections;
+
 /**
  *
  * @author ADMIN
  */
-public class FeastOrderList {
+public class FeastOrderList implements Serializable {
 
     public static ArrayList<FeastOrder> feastOrders = new ArrayList<>();
 
@@ -39,14 +48,7 @@ public class FeastOrderList {
                 int quantity = Inputter.inputQuantity();
 
                 String totalCost = FeastMenuList.formatPrice(calculateTotalCost(menuCode, quantity));
-
-                int orderId = 0;
-                for (FeastOrder fo : feastOrders) {
-                    if (fo.getOrderID() > orderId) {
-                        orderId = fo.getOrderID(); // Tìm order ID lớn nhất 
-                    }
-                }
-                orderId++; // Tạo 1 order ID mới lớn hơn để không bị trùng lặp
+                String orderId = customerCode;
                 FeastOrder newOrder = new FeastOrder(customerCode, menuCode, date, quantity, orderId, setPrice, totalCost);
                 feastOrders.add(newOrder);
                 System.out.println("New order placed successfully!");
@@ -67,28 +69,22 @@ public class FeastOrderList {
     }
 
     public static void updateOrder() {
-        int orderId = 0;
+        String orderId;
         FeastOrder foundOrder;
         Scanner sc = new Scanner(System.in);
 
         while (true) {
-            try {
-                System.out.println("Enter Order ID (Integer Number) to upgrade: ");
-                orderId = sc.nextInt();
-                sc.nextLine();
-                foundOrder = searchByOrderId(orderId);
-                if (foundOrder == null) {
-                    System.out.println("This Order does not exist. ");
-                    continue;
-                }
-                System.out.println("Order ID has been found!");
-                Displayer.displayOrder(foundOrder);
-                System.out.println("Enter new information to update or press ENTER to skip: ");
-                break;
-            } catch (InputMismatchException e) {
-                System.out.println("Order ID must be an integer number, please try again. ");
-                sc.nextLine();
+            System.out.println("Enter Order ID (Customer Code) to upgrade: ");
+            orderId = sc.nextLine().trim();
+            foundOrder = searchByOrderId(orderId);
+            if (foundOrder == null) {
+                System.out.println("This Order does not exist.");
+                continue;
             }
+            System.out.println("Order ID has been found!");
+            Displayer.displayOrder(foundOrder);
+            System.out.println("Enter new information to update or press ENTER to skip:");
+            break;
         }
 
         // Update Set Menu Code
@@ -151,8 +147,10 @@ public class FeastOrderList {
                 break;
             }
         }
+
         foundOrder.setTotalCost(FeastMenuList.formatPrice(totalPrice));
-        System.out.println("This order information has been upgraded successfully !!!");
+        System.out.println(
+                "This order information has been upgraded successfully !!!");
 
         // Back to Menu
         while (true) {
@@ -191,16 +189,39 @@ public class FeastOrderList {
         return 0;
     }
 
-    public static FeastOrder searchByOrderId(int id) {
+    public static FeastOrder searchByOrderId(String id) {
         for (FeastOrder fo : feastOrders) {
-            if (id == fo.getOrderID()) {
+            if (id.equalsIgnoreCase(fo.getOrderID())) {
                 return fo;
             }
         }
         return null;
     }
 
+    static void writeToFile() {
+        String filePath = "src/data/feast_order_services.dat";
+        try ( FileOutputStream fos = new FileOutputStream(filePath);  ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+            oos.writeObject(feastOrders);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-    
+    public static void readFromFile() {
+        String filePath = "src/data/feast_order_services.dat";
+        try ( FileInputStream fis = new FileInputStream(filePath);  ObjectInputStream ois = new ObjectInputStream(fis)) {
+            feastOrders = (ArrayList<FeastOrder>) ois.readObject();
+            System.out.println("Load data from 'feast_order_services.dat' successfully.");
+        } catch (FileNotFoundException e) {
+            System.out.println("Can not find 'feast_order_serviecs.dat'.");
+        } catch (IOException | ClassNotFoundException e) {
+            e.getStackTrace();
+        }
+    }
+
+    public static void saveData() {
+        writeToFile();
+        System.out.println("Order data has been successfully saved to 'feast_order_services.dat'");
+    }
 
 }

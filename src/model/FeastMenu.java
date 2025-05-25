@@ -3,12 +3,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package model;
+import java.io.Serializable;
 
 /**
  *
  * @author ADMIN
  */
-public class FeastMenu implements Comparable<FeastMenu> {
+public class FeastMenu implements Serializable,Comparable<FeastMenu> {
 
     private String menuCode;
     private String name;

@@ -16,6 +16,8 @@ import model.FeastOrder;
 import java.util.ArrayList;
 import collection.CustomerList;
 import collection.FeastMenuList;
+import collection.FeastOrderList;
+import menu.Displayer;
 import java.util.InputMismatchException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -151,8 +153,8 @@ public class Inputter {
         while (true) {
             try {
                 System.out.println("Enter number of tables you wish to order: ");
-                table = sc.nextInt(); // Nhập số nguyên
-                sc.nextLine();        // Xóa ký tự thừa sau khi nhập số
+                table = sc.nextInt();
+                sc.nextLine();
                 if (table > 0) {
                     break;
                 } else {
@@ -206,6 +208,53 @@ public class Inputter {
             System.out.println("Invalid date format, please try again (e.g., dd/MM/yyyy).");
         }
         return false;
+    }
+
+    public static void displayFile() {
+        Scanner sc = new Scanner(System.in);
+        while (true) {
+            try {
+                System.out.println("============= DISPLAY MENU =============");
+                System.out.println("0. Return to Main Menu");
+                System.out.println("1. Display Customers List");
+                System.out.println("2. Display Orders List");
+                System.out.println("========================================");
+                System.out.print("Choose an option (0-2): ");
+
+                int choice = sc.nextInt();
+                sc.nextLine();
+
+                switch (choice) {
+                    case 0:
+                        System.out.println("Returning to Main Menu...");
+                        return;
+                    case 1:
+                        CustomerList.readFromFile(); // Đọc dữ liệu từ file trước
+                        if (CustomerList.customers == null || CustomerList.customers.isEmpty()) {
+                            System.out.println("No customer data found in file.");
+                        } else {
+                            System.out.println("Customer list information from file:");
+                            Displayer.showCustomerList(CustomerList.customers);
+                        }
+                        return;
+                    case 2:
+                        FeastOrderList.readFromFile(); // Đọc dữ liệu từ file trước
+                        if (FeastOrderList.feastOrders == null || FeastOrderList.feastOrders.isEmpty()) {
+                            System.out.println("No order data found in file.");
+                        } else {
+                            System.out.println("Order list information from file:");
+                            Displayer.showOrderList();
+                        }
+                        return;
+                    default:
+                        System.out.println("Invalid option. Please choose 0, 1 or 2.");
+                }
+
+            } catch (InputMismatchException e) {
+                System.out.println("Input invalid, must be an integer (0-2).");
+                sc.nextLine();
+            }
+        }
     }
 
 }

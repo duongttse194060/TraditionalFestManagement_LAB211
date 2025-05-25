@@ -3,12 +3,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package model;
-
+import java.io.Serializable;
 /**
  *
  * @author ADMIN
  */
-public class Customer implements Comparable<Customer> {
+public class Customer implements Serializable,Comparable<Customer> {
     
     private String code;
     private String name;

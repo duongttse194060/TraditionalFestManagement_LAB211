@@ -8,6 +8,12 @@ package collection;
  *
  * @author ADMIN
  */
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
@@ -166,5 +172,31 @@ public class CustomerList {
             return tempName + ", " + others;
         }
         return name;
+    }
+
+    public static void writeToFile() {
+        String filePath = "src/data/customers.dat";
+        try ( FileOutputStream fos = new FileOutputStream(filePath);  ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+            oos.writeObject(customers);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void readFromFile() {
+        String filePath = "src/data/customers.dat";
+        try ( FileInputStream fis = new FileInputStream(filePath);  ObjectInputStream ois = new ObjectInputStream(fis)) {
+            customers = (ArrayList<Customer>) ois.readObject();
+            System.out.println("Load data from 'customers.dat' successfully.");
+        } catch (FileNotFoundException e) {
+            System.out.println("Can not find 'customers.dat'.");
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void saveData() {
+        writeToFile();
+        System.out.println("Customer data has been successfully saved to 'customers.dat'");
     }
 }

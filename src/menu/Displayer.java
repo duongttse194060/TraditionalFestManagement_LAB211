@@ -12,6 +12,8 @@ import model.FeastMenu;
 import collection.FeastMenuList;
 import collection.FeastOrderList;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
+import java.util.Scanner;
 
 /**
  *
@@ -47,36 +49,17 @@ public class Displayer {
         System.out.println("------------------------------------------------------------------------");
     }
 
-    public static void showAllOrder() {
-        System.out.println("All Orders Information: ");
-        System.out.println("--------------------------------------------------------------------------------");
-        System.out.printf("| %-10s | %-10s | %-10s | %-12s | %-8s | %-15s |\n",
-                "Order ID", "Cust.Code", "MenuCode", "Event Date", "Tables", "Total Cost");
-        System.out.println("--------------------------------------------------------------------------------");
+    public static void showOrderList() {
+        Collections.sort(FeastOrderList.feastOrders);
 
-        for (FeastOrder order : FeastOrderList.feastOrders) {
-            String formattedCost = String.format("%,d Vnd", order.getTotalCost());  // có dấu phẩy
-            System.out.printf("| %-10d | %-10s | %-10s | %-12s | %-8d | %-15s |\n",
-                    order.getOrderID(),
-                    order.getCustomerCode(),
-                    order.getSetMenuCode(),
-                    order.getEventDate(),
-                    order.getTableNumber(),
-                    formattedCost);
+        System.out.println("Orders information:");
+        System.out.println("---------------------------------------------------------------------------------");
+        System.out.println("ID     | Event date  | Customer ID | Set Menu | Price     | Tables | Cost        ");
+        System.out.println("---------------------------------------------------------------------------------");
+        for (FeastOrder fo : FeastOrderList.feastOrders) {
+            System.out.println(fo);
         }
-
-        System.out.println("--------------------------------------------------------------------------------");
-    }
-
-    public static void displayAllCustomers() {
-        Collections.sort(CustomerList.customers);
-        System.out.println("-----------------------------------------------------------------------");
-        System.out.println("Code        | Customer Name         | Phone          | Email           ");
-        System.out.println("-----------------------------------------------------------------------");
-        for (Customer c : CustomerList.customers) {
-            System.out.println(c);
-        }
-        System.out.println("-----------------------------------------------------------------------");
+        System.out.println("---------------------------------------------------------------------------------");
     }
 
     public static void showCustomerList(ArrayList<Customer> list) {
